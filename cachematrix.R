@@ -1,15 +1,35 @@
-## Put comments here that give an overall description of what your
-## functions do
+## The 2 functions in this R file can be used for
+## cashing and computing the inverse of a matrix
 
-## Write a short comment describing this function
+## The first function is makeCacheMatrix() which
+## makes a matrix object which cashes its inverse
 
-makeCacheMatrix <- function(x = matrix()) {
-
+makeCacheMatrix <- function(mtx = matrix()) {
+  inverse <- NULL
+  set <- function(x) {
+    mtx <<- x;
+    inverse <<- NULL;
+  }
+  get <- function() return(mtx);
+  setinv <- function(inv) inverse <<- inv;
+  getinv <- function() return(inverse);
+  return(list(set = set, get = get, setinv = setinv, getinv = getinv))
 }
 
 
-## Write a short comment describing this function
+## This is the cacheSolve() function.
+## It computes the inverse of the matrix created by makeCacheMatrix().
+## It gets the inverse from the cache if the inverse has already been calculated.
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+
+cacheSolve <- function(mtx, ...) {
+  inverse <- mtx$getinv()
+  if(!is.null(inverse)) {
+    message("Getting cached data...")
+    return(inverse)
+  }
+  data <- mtx$get()
+  invserse <- solve(data, ...)
+  mtx$setinv(inverse)
+  return(inverse)
 }
